@@ -17,13 +17,21 @@ class App extends Component {
     const newTaskList = this.state.tasks.slice();
     newTaskList.push(this.state.currentFormVaule);
     this.setState({tasks: newTaskList});
-    console.log(this.state.tasks);
   }
 
   renderList() {
-    return this.state.tasks.map((item) => {
-      return (<li>{item}</li>);
+    return this.state.tasks.map((item, index) => {
+      return (<div>
+                <li>{item}</li>
+                <button onClick={()=> this.handleDeleteTask(index)}>Delete</button>
+              </div>);
     });
+  }
+
+  handleDeleteTask(index) {
+    const newTaskList = this.state.tasks.slice();
+    newTaskList.splice(index, 1);
+    this.setState({tasks: newTaskList});
   }
 
   render() {
