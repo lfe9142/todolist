@@ -5,6 +5,7 @@ import './App.css';
 class App extends Component {
   state = {
     tasks: [],
+    completeTasks: [],
     currentFormVaule: ''
   };
 
@@ -18,11 +19,22 @@ class App extends Component {
     this.setState({tasks: newTaskList, currentFormVaule: ''});
   }
 
-  renderList() {
+
+
+  renderTaskList() {
     return this.state.tasks.map((item, index) => {
       return (<div style={this.taskListElementStyle}>
                 <li>{item}</li>
                 <button onClick={()=> this.handleDeleteTask(index)}>Delete</button>
+                <button onClick={() => this.handleFinishTask(index)}>Finished</button>
+              </div>);
+    });
+  }
+
+  renderCompleteList() {
+    return this.state.completeTasks.map((item, index) => {
+      return (<div style={this.taskListElementStyle}>
+                <li>{item}</li>
               </div>);
     });
   }
@@ -33,13 +45,26 @@ class App extends Component {
     this.setState({tasks: newTaskList});
   }
 
+  handleFinishTask(index) {
+    const newTaskList = this.state.tasks.slice();
+    const completedTask = newTaskList.splice(index, 1);
+
+    const newCompletedTaskList = this.state.completeTasks.slice();
+    newCompletedTaskList.push(completedTask);
+    console.log(newCompletedTaskList);
+    this.setState({tasks: newTaskList, completeTasks: newCompletedTaskList});
+  }
+
   render() {
     return (
       <div style={this.style}>
         <h2>Todo List</h2>
         <input type="text" value={this.state.currentFormVaule} onChange={(e) => {this.handleTextChange(e)}}/>
         <button onClick={()=> this.handleAddTask()}>Add task</button>
-        <ul>{this.renderList()}</ul>
+        <ul>{this.renderTaskList()}</ul>
+
+        <h2>Complete Tasks</h2>
+        <ul>{this.renderCompleteList()}</ul>
       </div>
     );
   }
